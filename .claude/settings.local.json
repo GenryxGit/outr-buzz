@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.clou.ch)",
+      "WebFetch(domain:basement.studio)",
+      "WebFetch(domain:www.awwwards.com)",
+      "WebFetch(domain:obys.agency)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --app --no-src-dir --import-alias \"@/*\" --yes)"
+    ]
+  }
+}
