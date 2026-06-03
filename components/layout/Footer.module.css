@@ -1,0 +1,24 @@
+.ctaBtn {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.ctaBtn:hover {
+  background-color: #b8e600 !important;
+  transform: scale(1.04);
+}
+
+.channel {
+  transition: color 0.2s ease;
+}
+
+.channel:hover {
+  color: var(--acid) !important;
+}
+
+.footerLink {
+  transition: color 0.2s ease;
+}
+
+.footerLink:hover {
+  color: var(--black) !important;
+}
