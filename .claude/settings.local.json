@@ -39,7 +39,9 @@
       "Bash(gh --version)",
       "Bash(gh auth *)",
       "PowerShell($gh = Get-Command gh -ErrorAction SilentlyContinue; if \\($gh\\) { Write-Output \"gh found at: $\\($gh.Source\\)\"; gh auth status } else { Write-Output \"gh NOT installed\" })",
-      "PowerShell(cd \"d:\\\\next-brands\\\\new-brand\"; git add -A; Write-Output \"=== Staged file count ===\"; \\(git diff --cached --name-only | Measure-Object -Line\\).Lines)"
+      "PowerShell(cd \"d:\\\\next-brands\\\\new-brand\"; git add -A; Write-Output \"=== Staged file count ===\"; \\(git diff --cached --name-only | Measure-Object -Line\\).Lines)",
+      "PowerShell(cd \"d:\\\\next-brands\\\\new-brand\"; git branch -M main; Write-Output \"Branch renamed to: $\\(git branch --show-current\\)\")",
+      "PowerShell(cd \"d:\\\\next-brands\\\\new-brand\"; \\(Get-Content package.json | Select-String \"resend\"\\))"
     ],
     "additionalDirectories": [
       "d:\\next-brands\\new-brand\\app\\work"

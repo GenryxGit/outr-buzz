@@ -15,35 +15,22 @@ const COLS = [
       { label: "Home", href: "/" },
       { label: "Work", href: "/work" },
       { label: "About", href: "/about" },
-      { label: "Journal", href: "/#journal" },
       { label: "Contact", href: "/contact" },
     ],
   },
   {
     head: "services",
     links: [
-      { label: "UI/UX Design", href: "/contact" },
-      { label: "Development", href: "/contact" },
-      { label: "Product Strategy", href: "/contact" },
-      { label: "Brand Identity", href: "/contact" },
-    ],
-  },
-  {
-    head: "outrbuzz",
-    links: [
-      { label: "About Us", href: "/about" },
-      { label: "Our Work", href: "/work" },
-      { label: "Contact", href: "/contact" },
-      { label: "Careers", href: "/contact" },
+      { label: "Design", href: "/services/design" },
+      { label: "Development", href: "/services/development" },
+      { label: "Marketing", href: "/services/digital-marketing" },
     ],
   },
   {
     head: "social",
     links: [
-      { label: "Instagram", href: "https://instagram.com/outrbuzz" },
-      { label: "Dribbble", href: "https://dribbble.com/outrbuzz" },
-      { label: "Behance", href: "https://behance.net/outrbuzz" },
-      { label: "LinkedIn", href: "https://linkedin.com/company/outrbuzz" },
+      { label: "Facebook", href: "https://www.facebook.com/outerbuzz" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/outerbuzz/" },
     ],
   },
 ];
@@ -244,7 +231,7 @@ export default function Footer() {
             fontSize: "0.7rem",
             color: "rgba(10,10,10,0.45)",
           }}>
-            © 2025 Outr Buzz — outrbuzz.com
+            © {new Date().getFullYear()} Outr Buzz — outrbuzz.com
           </span>
           <div style={{ display: "flex", gap: "1.5rem" }}>
             {[{ label: "Privacy", href: "/privacy" }, { label: "Terms", href: "/terms" }].map((l) => (

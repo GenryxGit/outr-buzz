@@ -7,6 +7,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Global size multiplier for the scattered images (tweak to taste)
+const IMG_SCALE = 0.8;
+
 // ex/ey: fraction of viewport from center (negative = left/up)
 const IMGS = [
   { src: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=600&q=80", w: 265, h: 335, sr: -16, ex: -0.35, ey: -0.22, er: -7 },
@@ -23,51 +26,57 @@ export default function CTA() {
   const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const W = window.innerWidth;
-      const H = window.innerHeight;
+    // Desktop/tablet only — mobile shows a static centred CTA (see globals.css)
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 769px)", () => {
+      const ctx = gsap.context(() => {
+        const W = window.innerWidth;
+        const H = window.innerHeight;
 
-      imgRefs.current.forEach((el, i) => {
-        if (!el) return;
-        gsap.set(el, { xPercent: -50, yPercent: -50, x: 0, y: 0, rotation: IMGS[i].sr });
-      });
+        imgRefs.current.forEach((el, i) => {
+          if (!el) return;
+          gsap.set(el, { xPercent: -50, yPercent: -50, x: 0, y: 0, rotation: IMGS[i].sr });
+        });
 
-      gsap.set(textRef.current, { xPercent: -50, yPercent: -50, opacity: 0, scale: 0.93 });
+        gsap.set(textRef.current, { xPercent: -50, yPercent: -50, opacity: 0, scale: 0.93 });
 
-      // pin:true instead of CSS sticky — CSS sticky breaks under Lenis transforms
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=120vh",
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          refreshPriority: -1,
-        },
-      });
+        // pin:true instead of CSS sticky — CSS sticky breaks under Lenis transforms
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "+=120vh",
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            refreshPriority: -1,
+          },
+        });
 
-      imgRefs.current.forEach((el, i) => {
-        if (!el) return;
-        tl.to(el, {
-          x: IMGS[i].ex * W,
-          y: IMGS[i].ey * H,
-          rotation: IMGS[i].er,
-          ease: "power2.inOut",
-          duration: 1,
-        }, 0);
-      });
+        imgRefs.current.forEach((el, i) => {
+          if (!el) return;
+          tl.to(el, {
+            x: IMGS[i].ex * W,
+            y: IMGS[i].ey * H,
+            rotation: IMGS[i].er,
+            ease: "power2.inOut",
+            duration: 1,
+          }, 0);
+        });
 
-      tl.to(textRef.current, {
-        opacity: 1,
-        scale: 1,
-        ease: "power2.out",
-        duration: 0.7,
-      }, 0.35);
-    }, sectionRef);
+        tl.to(textRef.current, {
+          opacity: 1,
+          scale: 1,
+          ease: "power2.out",
+          duration: 0.7,
+        }, 0.35);
+      }, sectionRef);
 
-    return () => ctx.revert();
+      return () => ctx.revert();
+    });
+
+    return () => mm.revert();
   }, []);
 
   return (
@@ -80,13 +89,14 @@ export default function CTA() {
         {IMGS.map((img, i) => (
           <div
             key={i}
+            className="cta-scatter-img"
             ref={(el) => { imgRefs.current[i] = el; }}
             style={{
               position: "absolute",
               left: "50%",
               top: "50%",
-              width: img.w,
-              height: img.h,
+              width: img.w * IMG_SCALE,
+              height: img.h * IMG_SCALE,
               borderRadius: "16px",
               overflow: "hidden",
               willChange: "transform",
@@ -104,6 +114,7 @@ export default function CTA() {
 
         <div
           ref={textRef}
+          className="cta-text"
           style={{
             position: "absolute",
             top: "50%",

@@ -1,6 +1,6 @@
 const logos = [
-  "Airbnb", "Stripe", "Notion", "Linear", "Figma",
-  "Vercel", "Shopify", "Framer", "Webflow", "Loom",
+  "BRAND IDENTITY", "WEB DEVELOPMENT", "UI/UX DESIGN", "MOTION GRAPHICS", "SEO & MARKETING",
+  "PRODUCT STRATEGY", "ECOMMERCE", "CONTENT STRATEGY", "MOBILE APPS", "DESIGN SYSTEMS",
 ];
 
 const track = [...logos, ...logos];

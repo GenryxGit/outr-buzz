@@ -19,6 +19,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AboutTestimonials from "@/components/sections/AboutTestimonials";
 import CTA from "@/components/sections/CTA";
+import ScrollRevealText from "@/components/ui/ScrollRevealText";
 import type { ServiceCategory, ServiceItem } from "@/lib/data/serviceCategories";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -143,58 +144,72 @@ export default function ServiceDetailPage({ cat, item }: Props) {
             }}
           />
 
-          <div style={{ position: "relative", zIndex: 1 }}>
-            {/* Category badge */}
-            <div style={{ display: "flex", alignItems: "center", gap: "0.7rem", marginBottom: "2rem" }}>
-              <span style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "1.1rem", color: "var(--electric)" }}>
-                {cat.icon}
-              </span>
-              <Link
-                href={`/services/${cat.slug}`}
+          <div
+            style={{
+              position: "relative", zIndex: 1,
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 420px), 1fr))",
+              gap: "clamp(2.5rem, 5vw, 5rem)",
+              alignItems: "stretch",
+            }}
+          >
+            {/* Left — badge + headline + paragraph */}
+            <div>
+              {/* Category badge */}
+              <div style={{ display: "flex", alignItems: "center", gap: "0.7rem", marginBottom: "2rem" }}>
+                <span style={{ fontFamily: "var(--font-space-grotesk)", fontSize: "1.1rem", color: "var(--electric)" }}>
+                  {cat.icon}
+                </span>
+                <Link
+                  href={`/services/${cat.slug}`}
+                  style={{
+                    fontFamily: "var(--font-space-grotesk)", fontWeight: 600,
+                    fontSize: "0.72rem", letterSpacing: "0.22em",
+                    color: "var(--electric)", textDecoration: "none",
+                  }}
+                >
+                  {cat.title.toUpperCase()}
+                </Link>
+              </div>
+
+              {/* Headline */}
+              <h1
                 style={{
-                  fontFamily: "var(--font-space-grotesk)", fontWeight: 600,
-                  fontSize: "0.72rem", letterSpacing: "0.22em",
-                  color: "var(--electric)", textDecoration: "none",
+                  fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
+                  fontSize: "clamp(3rem, 8vw, 7rem)", letterSpacing: "-0.04em",
+                  lineHeight: 0.93, color: "var(--black)", margin: "0 0 2rem",
                 }}
               >
-                {cat.title.toUpperCase()}
-              </Link>
+                {item.label}
+              </h1>
+
+              {/* Description — 2-3 lines, below heading */}
+              <p
+                style={{
+                  fontFamily: "var(--font-space-grotesk)", fontWeight: 500,
+                  fontSize: "clamp(1.05rem, 1.8vw, 1.4rem)", letterSpacing: "-0.01em",
+                  lineHeight: 1.6, color: "var(--muted)", margin: 0, maxWidth: "840px",
+                }}
+              >
+                {item.description}
+              </p>
             </div>
 
-            {/* Headline */}
-            <h1
-              style={{
-                fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
-                fontSize: "clamp(3rem, 8vw, 7rem)", letterSpacing: "-0.04em",
-                lineHeight: 0.93, color: "var(--black)",
-                margin: "0 0 1.5rem", maxWidth: "820px",
-              }}
-            >
-              {item.label}
-            </h1>
-
-            <p
-              style={{
-                fontFamily: "var(--font-space-grotesk)", fontWeight: 500,
-                fontSize: "clamp(1rem, 2vw, 1.4rem)", letterSpacing: "-0.01em",
-                color: "var(--muted)", margin: "0 0 2.5rem", maxWidth: "620px",
-              }}
-            >
-              {item.tagline}
-            </p>
-
-            <Link
-              href="/contact"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: "0.6rem",
-                fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: "0.88rem",
-                color: "var(--black)", backgroundColor: "var(--electric)",
-                padding: "1rem 2.2rem", borderRadius: "100px",
-                textDecoration: "none", letterSpacing: "0.02em",
-              }}
-            >
-              Start a Project →
-            </Link>
+            {/* Right — CTA pinned to bottom-right (left-aligned on mobile) */}
+            <div className="service-hero-cta" style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end", alignItems: "flex-end" }}>
+              <Link
+                href="/contact"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "0.6rem",
+                  fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: "0.88rem",
+                  color: "var(--black)", backgroundColor: "var(--electric)",
+                  padding: "1rem 2.2rem", borderRadius: "100px",
+                  textDecoration: "none", letterSpacing: "0.02em",
+                }}
+              >
+                Start a Project →
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -203,6 +218,7 @@ export default function ServiceDetailPage({ cat, item }: Props) {
         ════════════════════════════════════════ */}
         <section
           ref={imgSectionRef}
+          className="service-banner"
           style={{
             position: "relative",
             height: "clamp(420px, 65vh, 760px)",
@@ -258,6 +274,7 @@ export default function ServiceDetailPage({ cat, item }: Props) {
             FULL-SECTION CTA — below the image
         ════════════════════════════════════════ */}
         <section
+          data-cursor="QUOTE"
           style={{
             position: "relative",
             minHeight: "85vh",
@@ -280,14 +297,26 @@ export default function ServiceDetailPage({ cat, item }: Props) {
           {/* Content */}
           <div style={{ position: "relative", zIndex: 1, padding: "clamp(4rem, 10vw, 8rem) clamp(1.5rem, 8vw, 8rem)" }}>
             <h2
+              className="cta-heading"
               style={{
-                fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
-                fontSize: "clamp(3rem, 8vw, 8rem)", letterSpacing: "-0.04em",
-                lineHeight: 0.95, color: "var(--black)",
+                fontFamily: "var(--font-syne)", fontWeight: 800,
+                fontSize: "clamp(3rem, 8vw, 8rem)", letterSpacing: "-0.03em",
+                lineHeight: 0.98,
                 margin: "0 auto 3rem", maxWidth: "1100px",
+                // GIF clipped inside the text
+                backgroundImage: "url(/images/services/banner-heading-bg.gif)",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                color: "transparent",
+                filter: "invert(1)",
               }}
             >
-              Start your {item.label}<br />project today.
+              <span style={{ display: "block", whiteSpace: "nowrap" }}>Let&apos;s make</span>
+              <span style={{ display: "block", whiteSpace: "nowrap" }}>some buzz.</span>
             </h2>
 
             <Link
@@ -372,7 +401,6 @@ export default function ServiceDetailPage({ cat, item }: Props) {
                   className="deliverable-row"
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
                     gap: "clamp(2rem, 5vw, 5rem)",
                     alignItems: "center",
                     padding: "clamp(3rem, 6vw, 5rem) 0",
@@ -403,15 +431,13 @@ export default function ServiceDetailPage({ cat, item }: Props) {
                     >
                       {deliverable.name}
                     </h3>
-                    <p
+                    <ScrollRevealText
+                      text={deliverable.description}
                       style={{
                         fontFamily: "var(--font-dm-sans)", fontSize: "clamp(1.05rem, 1.8vw, 1.25rem)",
-                        lineHeight: 1.9, color: "var(--muted)",
-                        margin: 0, maxWidth: "100%",
+                        lineHeight: 1.9, margin: 0, maxWidth: "100%",
                       }}
-                    >
-                      {deliverable.description}
-                    </p>
+                    />
                   </div>
 
                   {/* Image side */}
@@ -501,7 +527,6 @@ export default function ServiceDetailPage({ cat, item }: Props) {
                 className="process-row"
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "80px 1fr 220px",
                   alignItems: "center",
                   gap: "clamp(1.5rem, 4vw, 3rem)",
                   padding: "clamp(2rem, 3.5vw, 2.8rem) 0",

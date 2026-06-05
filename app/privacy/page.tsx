@@ -93,7 +93,7 @@ export default function PrivacyPage() {
                 margin: 0,
               }}
             >
-              Last updated: June 2025 &nbsp;·&nbsp;{" "}
+              Last updated: June 2026 &nbsp;·&nbsp;{" "}
               <Link href="/terms" style={{ color: "var(--black)", textDecoration: "underline" }}>
                 Terms of Service
               </Link>

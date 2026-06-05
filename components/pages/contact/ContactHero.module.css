@@ -231,12 +231,12 @@
   }
 
   .left {
-    order: 2;
+    order: 1;
     padding-bottom: 0;
   }
 
   .panel {
-    order: 1;
+    order: 2;
     max-width: 100%;
     align-self: stretch;
   }

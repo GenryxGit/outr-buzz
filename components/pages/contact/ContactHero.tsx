@@ -4,21 +4,21 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { sendContactEmail } from "@/app/actions";
 import styles from "./ContactHero.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type FormState = { status: "idle" | "success" | "error"; errors: Record<string, string> };
+type FormState = { status: "idle" | "success" | "error"; message: string; errors: Record<string, string> };
 
-const initial: FormState = { status: "idle", errors: {} };
+const initial: FormState = { status: "idle", message: "", errors: {} };
 
 export default function ContactHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef      = useRef<HTMLDivElement>(null);
 
-  const [state, setState]       = useState<FormState>(initial);
-  const [pending, setPending]   = useState(false);
-  const [mailtoHref, setMailtoHref] = useState("");
+  const [state, setState]     = useState<FormState>(initial);
+  const [pending, setPending] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -36,44 +36,17 @@ export default function ContactHero() {
     return () => ctx.revert();
   }, []);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const firstName = (fd.get("firstName") as string).trim();
-    const lastName  = (fd.get("lastName")  as string).trim();
-    const email     = (fd.get("email")     as string).trim();
-    const subject   = (fd.get("subject")   as string).trim();
-    const message   = (fd.get("message")   as string).trim();
-
-    const errors: Record<string, string> = {};
-    if (!firstName) errors.firstName = "Required";
-    if (!lastName)  errors.lastName  = "Required";
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      errors.email = "Valid email required";
-    if (!message || message.length < 10)
-      errors.message = "Please add a bit more detail";
-
-    if (Object.keys(errors).length > 0) {
-      setState({ status: "error", errors });
-      return;
-    }
+    const form = e.currentTarget;
+    const fd = new FormData(form);
 
     setPending(true);
-    const body = [
-      `Name: ${firstName} ${lastName}`,
-      `Email: ${email}`,
-      subject ? `Subject: ${subject}` : "",
-      "",
-      message,
-    ].filter(Boolean).join("\n");
-
-    const href = `mailto:hello@outrbuzz.com?subject=${encodeURIComponent(
-      subject || `Message from ${firstName} ${lastName}`
-    )}&body=${encodeURIComponent(body)}`;
-
-    setMailtoHref(href);
-    setState({ status: "success", errors: {} });
+    const result = await sendContactEmail(fd);
     setPending(false);
+
+    setState({ status: result.status, message: result.message, errors: result.errors });
+    if (result.status === "success") form.reset();
   }
 
   return (
@@ -115,13 +88,10 @@ export default function ContactHero() {
         <div className={styles.panel}>
           {state.status === "success" ? (
             <div className={styles.success}>
-              <p className={styles.successHeading}>Message ready!</p>
+              <p className={styles.successHeading}>Message sent!</p>
               <p className={styles.successBody}>
-                Your email draft is pre-filled. Open it below and hit send.
+                Thanks for reaching out — we&apos;ll get back to you shortly.
               </p>
-              <a href={mailtoHref} className={styles.successBtn}>
-                Open Email Draft →
-              </a>
             </div>
           ) : (
             <>
@@ -143,8 +113,8 @@ export default function ContactHero() {
                       autoComplete="given-name"
                       className={styles.input}
                     />
-                    {state.errors.firstName && (
-                      <span className={styles.error}>{state.errors.firstName}</span>
+                    {state.errors.name && (
+                      <span className={styles.error}>{state.errors.name}</span>
                     )}
                   </div>
                   <div className={styles.field}>
@@ -159,9 +129,6 @@ export default function ContactHero() {
                       autoComplete="family-name"
                       className={styles.input}
                     />
-                    {state.errors.lastName && (
-                      <span className={styles.error}>{state.errors.lastName}</span>
-                    )}
                   </div>
                 </div>
 
@@ -210,8 +177,8 @@ export default function ContactHero() {
                   )}
                 </div>
 
-                {state.status === "error" && Object.keys(state.errors).length === 0 && (
-                  <p className={styles.error}>Something went wrong. Please try again.</p>
+                {state.status === "error" && Object.keys(state.errors).length === 0 && state.message && (
+                  <p className={styles.error}>{state.message}</p>
                 )}
 
                 <button type="submit" className={styles.submit} disabled={pending}>

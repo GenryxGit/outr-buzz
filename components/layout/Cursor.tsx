@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
 export default function Cursor() {
@@ -8,9 +8,19 @@ export default function Cursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
 
+  // Only render the custom cursor on real mouse devices wider than a tablet.
+  // Rendering nothing on touch/small screens avoids any stray cursor dot.
+  const [enabled, setEnabled] = useState(false);
   useEffect(() => {
-    // Only mount on real pointer (mouse) devices
-    if (!window.matchMedia("(pointer: fine)").matches) return;
+    const decide = () =>
+      setEnabled(window.matchMedia("(pointer: fine)").matches && window.innerWidth > 1024);
+    decide();
+    window.addEventListener("resize", decide);
+    return () => window.removeEventListener("resize", decide);
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
 
     const cursor = cursorRef.current;
     const dot = dotRef.current;
@@ -63,13 +73,16 @@ export default function Cursor() {
       document.removeEventListener("mouseover", onOver);
       document.removeEventListener("mouseout", onOut);
     };
-  }, []);
+  }, [enabled]);
+
+  // No custom cursor on touch screens / tablet-and-below
+  if (!enabled) return null;
 
   return (
     <>
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 z-[9999] pointer-events-none mix-blend-difference"
+        className="custom-cursor fixed top-0 left-0 z-[9999] pointer-events-none mix-blend-difference"
         style={{
           width: 40,
           height: 40,
@@ -95,7 +108,7 @@ export default function Cursor() {
       </div>
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 z-[9999] pointer-events-none"
+        className="custom-cursor fixed top-0 left-0 z-[9999] pointer-events-none"
         style={{
           width: 5,
           height: 5,

@@ -66,8 +66,8 @@ export default function Stats() {
         </h2>
       </div>
 
-      {/* Bento grid — 12 cols */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "0.75rem" }}>
+      {/* Bento grid — 12 cols (cards stack full-width ≤768 via .bento-grid) */}
+      <div className="bento-grid">
 
         {/* A — tall statement (col 1–3, rows 1–2) */}
         <div className="bento-stats-card" style={{

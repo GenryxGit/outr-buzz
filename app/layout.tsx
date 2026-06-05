@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, DM_Sans } from "next/font/google";
+import { Space_Grotesk, DM_Sans, Syne } from "next/font/google";
 import "./globals.css";
 import SmoothScrollProvider from "@/lib/lenis";
 import Cursor from "@/components/layout/Cursor";
@@ -15,6 +15,13 @@ const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
+});
+
+// Display font — used for large statement headings (e.g. the service CTA)
+const syne = Syne({
+  variable: "--font-syne",
+  subsets: ["latin"],
+  weight: ["700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -63,7 +70,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable} ${syne.variable}`}>
       <head>
         {/* Preconnect to external image CDNs used across the site */}
         <link rel="preconnect" href="https://images.unsplash.com" />
@@ -102,9 +109,8 @@ export default function RootLayout({
                     },
                   ],
                   sameAs: [
-                    "https://instagram.com/outrbuzz",
-                    "https://dribbble.com/outrbuzz",
-                    "https://linkedin.com/company/outrbuzz",
+                    "https://www.facebook.com/outerbuzz",
+                    "https://www.linkedin.com/company/outerbuzz/",
                   ],
                 },
                 {

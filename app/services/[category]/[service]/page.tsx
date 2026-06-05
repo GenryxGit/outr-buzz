@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ServicePage({ params }: Props) {
   const { category, service } = await params;
-  const cat  = getCategoryBySlug(category);
+  const cat = getCategoryBySlug(category);
   const item = getServiceBySlug(category, service);
   if (!cat || !item) notFound();
   return <ServiceDetailPage cat={cat} item={item} />;

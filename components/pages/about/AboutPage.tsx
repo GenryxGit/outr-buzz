@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -87,49 +87,59 @@ export default function AboutPage() {
   const cardsWrapRef = useRef<HTMLDivElement>(null);
   const principlesRef = useRef<HTMLDivElement>(null);
 
-  /* ── Pinned tilt-in animation ── */
+  // Mobile-only team carousel (one card at a time)
+  const [teamIndex, setTeamIndex] = useState(0);
+  const teamPrev = () => setTeamIndex((i) => (i - 1 + cards.length) % cards.length);
+  const teamNext = () => setTeamIndex((i) => (i + 1) % cards.length);
+
+  /* ── Pinned tilt-in animation (desktop only — cards are hidden ≤900) ── */
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const getEndY = () => {
-        const vh = window.innerHeight;
-        // row 3 bottom = 4vh + (CARD_H + ROW_GAP)*2 + CARD_H
-        // push until row 3 bottom is fully above viewport top (y=0)
-        const row3Bottom = vh * 0.04 + (CARD_H + ROW_GAP) * 2 + CARD_H;
-        return -row3Bottom;
-      };
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 901px)", () => {
+      const ctx = gsap.context(() => {
+        const getEndY = () => {
+          const vh = window.innerHeight;
+          // row 3 bottom = 4vh + (CARD_H + ROW_GAP)*2 + CARD_H
+          // push until row 3 bottom is fully above viewport top (y=0)
+          const row3Bottom = vh * 0.04 + (CARD_H + ROW_GAP) * 2 + CARD_H;
+          return -row3Bottom;
+        };
 
-      gsap.set(cardsWrapRef.current, {
-        y: "55vh",
-        rotateX: 32,
-        transformOrigin: "center bottom",
-        transformPerspective: 1100,
-      });
+        gsap.set(cardsWrapRef.current, {
+          y: "55vh",
+          rotateX: 32,
+          transformOrigin: "center bottom",
+          transformPerspective: 1100,
+        });
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: () => {
-            const vh = window.innerHeight;
-            const travel = vh + Math.abs(getEndY());
-            return `+=${travel * 0.72}`;
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: () => {
+              const vh = window.innerHeight;
+              const travel = vh + Math.abs(getEndY());
+              return `+=${travel * 0.72}`;
+            },
+            pin: true,
+            scrub: 1.2,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
           },
-          pin: true,
-          scrub: 1.2,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
+        });
 
-      tl.to(cardsWrapRef.current, {
-        y: () => getEndY(),
-        rotateX: 0,
-        ease: "power2.inOut",
-        duration: 1,
-      });
-    }, sectionRef);
+        tl.to(cardsWrapRef.current, {
+          y: () => getEndY(),
+          rotateX: 0,
+          ease: "power2.inOut",
+          duration: 1,
+        });
+      }, sectionRef);
 
-    return () => ctx.revert();
+      return () => ctx.revert();
+    });
+
+    return () => mm.revert();
   }, []);
 
   /* ── Hero headline entrance (page load) ── */
@@ -225,6 +235,41 @@ export default function AboutPage() {
         <ClientLogos />
 
         {/* ══════════════════════════════════
+            TEAM CAROUSEL — mobile only
+        ══════════════════════════════════ */}
+        <section className={styles.mobileTeam}>
+          <span className={styles.heroEyebrow}>OUR TEAM</span>
+          <h2 className={styles.teamHeading}>Meet the<br />team.</h2>
+
+          <div className={styles.teamCard} key={teamIndex}>
+            <div className={styles.cardFrame}>
+              <div className={styles.teamImgWrap}>
+                <Image
+                  src={cards[teamIndex].src}
+                  alt={cards[teamIndex].name}
+                  fill
+                  sizes="(max-width: 900px) 90vw, 360px"
+                  style={{ objectFit: "cover", objectPosition: "top center" }}
+                />
+              </div>
+              <div className={styles.cardInfo}>
+                <span className={styles.cardName}>{cards[teamIndex].name}</span>
+                <span className={styles.cardRole}>{cards[teamIndex].role}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Arrows + counter */}
+          <div className={styles.teamArrows}>
+            <button onClick={teamPrev} className={styles.teamArrowBtn} aria-label="Previous team member">←</button>
+            <span className={styles.teamCounter}>
+              {String(teamIndex + 1).padStart(2, "0")} / {String(cards.length).padStart(2, "0")}
+            </span>
+            <button onClick={teamNext} className={styles.teamArrowBtn} aria-label="Next team member">→</button>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════
             HOW WE WORK — redesigned
         ══════════════════════════════════ */}
         <section style={{ backgroundColor: "var(--cream)", padding: "clamp(5rem, 10vw, 8rem) clamp(1.5rem, 5vw, 4rem)" }}>
@@ -250,7 +295,7 @@ export default function AboutPage() {
               <div
                 key={p.index}
                 className="about-p-card"
-                style={{ display: "grid", gridTemplateColumns: "80px 1fr auto", alignItems: "start", gap: "clamp(1.5rem, 4vw, 3rem)", padding: "clamp(2rem, 3.5vw, 2.8rem) 0", borderBottom: "1px solid rgba(10,10,10,0.08)", opacity: 0 }}
+                style={{ display: "grid", alignItems: "start", gap: "clamp(1.5rem, 4vw, 3rem)", padding: "clamp(2rem, 3.5vw, 2.8rem) 0", borderBottom: "1px solid rgba(10,10,10,0.08)", opacity: 0 }}
               >
                 {/* Number */}
                 <span style={{ fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-0.04em", color: i === 0 ? "var(--electric)" : i === 1 ? "var(--black)" : "var(--muted)", lineHeight: 1 }}>

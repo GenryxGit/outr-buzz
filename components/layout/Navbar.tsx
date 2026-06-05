@@ -46,27 +46,57 @@ const SERVICES_DROPDOWN = [
   },
 ];
 
+const SOCIAL_LINKS = [
+  { label: "Facebook", href: "https://www.facebook.com/outerbuzz" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/outerbuzz/" },
+];
+
+/* Small chevron that rotates when its section is open */
+function Chevron({ open, size = 16 }: { open: boolean; size?: number }) {
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 12 12" fill="none"
+      style={{ transition: "transform 0.25s", transform: open ? "rotate(180deg)" : "rotate(0deg)", flexShrink: 0 }}
+    >
+      <path d="M2 4L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/* ── Mobile menu shared styles ── */
+const mobileLinkStyle: React.CSSProperties = {
+  fontFamily: "var(--font-space-grotesk)", fontWeight: 700,
+  fontSize: "clamp(1.7rem, 7vw, 2.4rem)", letterSpacing: "-0.02em",
+  color: "var(--black)", textDecoration: "none",
+  padding: "0.9rem 0", borderTop: "1px solid rgba(10,10,10,0.08)",
+};
+const mobileCategoryStyle: React.CSSProperties = {
+  fontFamily: "var(--font-space-grotesk)", fontWeight: 600,
+  fontSize: "1.05rem", letterSpacing: "0.01em", color: "var(--black)",
+  textDecoration: "none", padding: "0.9rem 0", display: "block",
+};
+const mobileSubStyle: React.CSSProperties = {
+  fontFamily: "var(--font-dm-sans)", fontSize: "0.92rem",
+  color: "rgba(10,10,10,0.6)", textDecoration: "none",
+  padding: "0.45rem 0 0.45rem 1rem",
+};
+
 export default function Navbar() {
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const menuLinksRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);          // desktop hover dropdown
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileOpenCat, setMobileOpenCat] = useState<string | null>(null);
   const servicesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Overlay slide is driven by an inline CSS transform + transition (below).
+  // This effect locks body scroll and resets the accordions when closed.
   useEffect(() => {
-    if (!overlayRef.current) return;
-    if (menuOpen) {
-      document.body.style.overflow = "hidden";
-      gsap.to(overlayRef.current, { yPercent: 0, duration: 0.6, ease: "power4.inOut" });
-      gsap.fromTo(
-        menuLinksRef.current.filter(Boolean),
-        { y: 80, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.08, duration: 0.5, ease: "power3.out", delay: 0.3 }
-      );
-    } else {
-      document.body.style.overflow = "";
-      gsap.to(overlayRef.current, { yPercent: -100, duration: 0.5, ease: "power4.inOut" });
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    if (!menuOpen) {
+      setMobileServicesOpen(false);
+      setMobileOpenCat(null);
     }
+    return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
   const handleMagnet = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -89,11 +119,12 @@ export default function Navbar() {
     servicesTimeout.current = setTimeout(() => setServicesOpen(false), 120);
   };
 
-  const allMobileLinks = [...NAV_LINKS, { label: "Services", href: "/services" }];
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <>
       <nav
+        className="site-navbar"
         style={{
           position: "fixed",
           top: "1.2rem",
@@ -163,14 +194,17 @@ export default function Navbar() {
             onMouseEnter={openServices}
             onMouseLeave={closeServices}
           >
-            <Link
-              href="/services"
+            {/* Non-navigating trigger — hover opens the dropdown, click does nothing */}
+            <button
+              type="button"
+              aria-haspopup="true"
+              aria-expanded={servicesOpen}
               style={{
                 fontFamily: "var(--font-space-grotesk)",
                 fontWeight: 500,
                 fontSize: "0.85rem",
                 color: "#0A0A0A",
-                textDecoration: "none",
+                border: "none",
                 letterSpacing: "0.01em",
                 padding: "0.45rem 1rem",
                 borderRadius: "100px",
@@ -188,7 +222,7 @@ export default function Navbar() {
               >
                 <path d="M2 4L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </Link>
+            </button>
 
             {/* Dropdown panel */}
             {servicesOpen && (
@@ -302,53 +336,113 @@ export default function Navbar() {
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden flex flex-col gap-1.5 p-2"
-            style={{
-              backgroundColor: "rgba(255,255,255,0.88)",
-              backdropFilter: "blur(18px)",
-              WebkitBackdropFilter: "blur(18px)",
-              border: "1px solid rgba(0,0,0,0.07)",
-              borderRadius: "100px",
-              boxShadow: "0 4px 28px rgba(0,0,0,0.10)",
-            }}
+            className="md:hidden flex flex-col gap-2 p-2"
+            style={{ background: "none", border: "none" }}
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
           >
-            <span className="block h-px w-5 bg-black transition-all duration-300"
-              style={{ transform: menuOpen ? "rotate(45deg) translate(3px, 3px)" : "none" }} />
-            <span className="block h-px w-5 bg-black transition-all duration-300"
+            <span className="block h-0.5 w-7 bg-black transition-all duration-300"
+              style={{ transform: menuOpen ? "rotate(45deg) translate(4px, 4px)" : "none" }} />
+            <span className="block h-0.5 w-7 bg-black transition-all duration-300"
               style={{ opacity: menuOpen ? 0 : 1 }} />
-            <span className="block h-px w-5 bg-black transition-all duration-300"
-              style={{ transform: menuOpen ? "rotate(-45deg) translate(3px, -3px)" : "none" }} />
+            <span className="block h-0.5 w-7 bg-black transition-all duration-300"
+              style={{ transform: menuOpen ? "rotate(-45deg) translate(4px, -4px)" : "none" }} />
           </button>
         </div>
       </nav>
 
-      {/* Mobile fullscreen overlay */}
+      {/* Mobile fullscreen menu — white, left-aligned, Services accordion */}
       <div
-        ref={overlayRef}
-        className="fixed inset-0 z-[99] flex flex-col items-center justify-center md:hidden"
-        style={{ backgroundColor: "#0A0A0A", transform: "translateY(-100%)" }}
+        className="md:hidden"
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 99,
+          backgroundColor: "var(--cream)",
+          transform: menuOpen ? "translateY(0%)" : "translateY(-100%)",
+          transition: "transform 0.55s cubic-bezier(0.76, 0, 0.24, 1)",
+          overflowY: "auto",
+          display: "flex",
+          flexDirection: "column",
+          padding: "6rem 1.75rem 2.5rem",
+        }}
       >
-        <div className="flex flex-col items-center gap-8">
-          {allMobileLinks.map((item, i) => (
-            <Link
-              key={item.label}
-              ref={(el) => { menuLinksRef.current[i] = el; }}
-              href={item.href}
-              onClick={() => setMenuOpen(false)}
-              style={{
-                fontFamily: "var(--font-space-grotesk)",
-                fontWeight: 700,
-                fontSize: "clamp(2.5rem, 8vw, 5rem)",
-                color: "#FAFAF8",
-                textDecoration: "none",
-                letterSpacing: "-0.02em",
-                display: "inline-block",
-              }}
-            >
+        <nav style={{ display: "flex", flexDirection: "column", marginTop: "0.5rem" }}>
+          {/* Plain links */}
+          {NAV_LINKS.map((item) => (
+            <Link key={item.label} href={item.href} onClick={closeMenu} style={mobileLinkStyle}>
               {item.label}
             </Link>
+          ))}
+
+          {/* Services accordion header — click only toggles, never navigates */}
+          <button
+            type="button"
+            onClick={() => setMobileServicesOpen((v) => !v)}
+            aria-expanded={mobileServicesOpen}
+            style={{
+              ...mobileLinkStyle,
+              background: "none", border: "none", borderTop: "1px solid rgba(10,10,10,0.08)",
+              cursor: "pointer", width: "100%", textAlign: "left",
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+            }}
+          >
+            Services
+            <Chevron open={mobileServicesOpen} size={20} />
+          </button>
+
+          {/* Categories list */}
+          <div style={{ maxHeight: mobileServicesOpen ? 2000 : 0, overflow: "hidden", transition: "max-height 0.45s ease" }}>
+            {SERVICES_DROPDOWN.map((cat) => (
+              <div key={cat.heading} style={{ borderTop: "1px solid rgba(10,10,10,0.06)", paddingLeft: "0.5rem" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  {/* Text → category page */}
+                  <Link href={cat.href} onClick={closeMenu} style={{ ...mobileCategoryStyle, flex: 1 }}>
+                    {cat.heading}
+                  </Link>
+                  {/* Arrow → toggle sub-services */}
+                  <button
+                    type="button"
+                    aria-label={`Toggle ${cat.heading} services`}
+                    aria-expanded={mobileOpenCat === cat.heading}
+                    onClick={() => setMobileOpenCat((c) => (c === cat.heading ? null : cat.heading))}
+                    style={{ background: "none", border: "none", cursor: "pointer", padding: "0.9rem 0 0.9rem 1.2rem", color: "var(--black)" }}
+                  >
+                    <Chevron open={mobileOpenCat === cat.heading} size={16} />
+                  </button>
+                </div>
+
+                {/* Sub-services */}
+                <div style={{ maxHeight: mobileOpenCat === cat.heading ? 1000 : 0, overflow: "hidden", transition: "max-height 0.4s ease" }}>
+                  <div style={{ display: "flex", flexDirection: "column", paddingBottom: "0.8rem" }}>
+                    {cat.items.map((sub) => (
+                      <Link key={sub.href} href={sub.href} onClick={closeMenu} style={mobileSubStyle}>
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </nav>
+
+        {/* Social links — pinned to the bottom */}
+        <div style={{ marginTop: "auto", paddingTop: "2.5rem", display: "flex", flexWrap: "wrap", gap: "1.25rem" }}>
+          {SOCIAL_LINKS.map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: "var(--font-space-grotesk)", fontWeight: 600,
+                fontSize: "0.8rem", letterSpacing: "0.04em",
+                color: "rgba(10,10,10,0.6)", textDecoration: "none",
+              }}
+            >
+              {s.label}
+            </a>
           ))}
         </div>
       </div>

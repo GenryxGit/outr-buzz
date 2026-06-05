@@ -80,23 +80,17 @@ export default function Projects() {
         </Link>
       </div>
 
-      {/* 12-column grid */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(12, 1fr)",
-          gap: "1rem",
-        }}
-      >
+      {/* 12-column grid (stacks to 1 column ≤768 via .home-projects-grid) */}
+      <div className="home-projects-grid">
         {projects.map((project, i) => (
           <Link
             key={project.id}
-            href={`/work/${project.slug}`}
+            href="/contact"
             className="project-card"
             ref={(el) => { cardRefs.current[i] = el as HTMLDivElement | null; }}
             onMouseEnter={() => handleEnter(i)}
             onMouseLeave={() => handleLeave(i)}
-            data-cursor="VIEW"
+            data-cursor="START"
             style={{
               gridColumn: `span ${project.cols}`,
               height: project.cols === 12 ? "clamp(340px, 50vw, 600px)" : "clamp(320px, 45vw, 520px)",
@@ -163,7 +157,7 @@ export default function Projects() {
                   borderRadius: "100px",
                 }}
               >
-                VIEW PROJECT →
+START YOUR PROJECT →
               </span>
             </div>
 

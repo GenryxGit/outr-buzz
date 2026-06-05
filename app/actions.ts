@@ -1,10 +1,11 @@
 "use server";
 
+import { Resend } from "resend";
+
 export type ContactFormState = {
   status: "idle" | "error" | "success";
   message: string;
-  mailtoHref?: string;
-  errors: Partial<Record<"name" | "email" | "services" | "details", string>>;
+  errors: Partial<Record<"name" | "email" | "message", string>>;
 };
 
 export const initialContactFormState: ContactFormState = {
@@ -13,82 +14,86 @@ export const initialContactFormState: ContactFormState = {
   errors: {},
 };
 
-const CONTACT_EMAIL = "hello@outrbuzz.com";
+// Where contact submissions are delivered.
+const TO_EMAIL = "hello@outrbuzz.com";
+// Sender — must be on a domain verified in Resend.
+// Until outrbuzz.com is verified, use "Outr Buzz <onboarding@resend.dev>" for testing.
+const FROM_EMAIL = "Outr Buzz <hello@outrbuzz.com>";
 
 function getStringValue(value: FormDataEntryValue | null) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-export async function createContactDraft(
-  _prevState: ContactFormState,
-  formData: FormData
-): Promise<ContactFormState> {
-  const name = getStringValue(formData.get("name"));
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+export async function sendContactEmail(formData: FormData): Promise<ContactFormState> {
+  const firstName = getStringValue(formData.get("firstName"));
+  const lastName = getStringValue(formData.get("lastName"));
   const email = getStringValue(formData.get("email"));
-  const company = getStringValue(formData.get("company"));
-  const timeline = getStringValue(formData.get("timeline"));
-  const budget = getStringValue(formData.get("budget"));
-  const source = getStringValue(formData.get("source"));
-  const details = getStringValue(formData.get("details"));
-  const services = formData
-    .getAll("services")
-    .filter((value): value is string => typeof value === "string")
-    .map((value) => value.trim())
-    .filter(Boolean);
+  const subject = getStringValue(formData.get("subject"));
+  const message = getStringValue(formData.get("message"));
 
+  const fullName = [firstName, lastName].filter(Boolean).join(" ");
+
+  // ── Validation ──
   const errors: ContactFormState["errors"] = {};
-
-  if (!name) {
-    errors.name = "Please share your name.";
+  if (!firstName || !lastName) {
+    errors.name = "Please share your full name.";
   }
-
-  if (!email) {
-    errors.email = "Please share your email address.";
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     errors.email = "Please enter a valid email address.";
   }
-
-  if (services.length === 0) {
-    errors.services = "Choose at least one service.";
-  }
-
-  if (!details || details.length < 30) {
-    errors.details = "Add a bit more detail so the brief is useful.";
+  if (!message || message.length < 10) {
+    errors.message = "Please add a bit more detail.";
   }
 
   if (Object.keys(errors).length > 0) {
+    return { status: "error", message: "Please fix the highlighted fields.", errors };
+  }
+
+  // ── Send via Resend ──
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
     return {
       status: "error",
-      message: "Please fix the highlighted fields and try again.",
-      errors,
+      message: "Email is not configured yet. Please try again shortly.",
+      errors: {},
     };
   }
 
-  const subject = `[Outr Buzz Inquiry] ${name}${company ? ` - ${company}` : ""}`;
-  const bodyLines = [
-    "Hi Outr Buzz,",
-    "",
-    "I would like to discuss a new project.",
-    "",
-    `Name: ${name}`,
-    `Email: ${email}`,
-    `Company: ${company || "Not provided"}`,
-    `Services: ${services.join(", ")}`,
-    `Budget: ${budget || "Not provided"}`,
-    `Timeline: ${timeline || "Not provided"}`,
-    `How they heard about us: ${source || "Not provided"}`,
-    "",
-    "Project details:",
-    details,
-  ];
+  const resend = new Resend(apiKey);
 
-  return {
-    status: "success",
-    message:
-      "Your project brief is ready. Open the drafted email below to send it directly to our team.",
-    mailtoHref: `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-      bodyLines.join("\n")
-    )}`,
-    errors: {},
-  };
+  const html = `
+    <h2>New project inquiry</h2>
+    <p><strong>Name:</strong> ${escapeHtml(fullName)}</p>
+    <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+    ${subject ? `<p><strong>Subject:</strong> ${escapeHtml(subject)}</p>` : ""}
+    <p><strong>Message:</strong></p>
+    <p>${escapeHtml(message).replace(/\n/g, "<br/>")}</p>
+  `;
+
+  try {
+    const { error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: TO_EMAIL,
+      replyTo: email,
+      subject: subject ? `[Outr Buzz] ${subject}` : `[Outr Buzz] New inquiry from ${fullName}`,
+      html,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return { status: "error", message: "Something went wrong. Please try again.", errors: {} };
+    }
+
+    return { status: "success", message: "Thanks! Your message is on its way.", errors: {} };
+  } catch (err) {
+    console.error("Contact form send failed:", err);
+    return { status: "error", message: "Something went wrong. Please try again.", errors: {} };
+  }
 }

@@ -34,6 +34,25 @@
   z-index: 2;
 }
 
+/* Shrink the floating hero images on mid-size laptops (1025–1440px).
+   Zooming each CARD (not the whole layer) keeps their spread positions,
+   so smaller images naturally leave more gap between them.
+   `zoom` is used (not transform) so it never conflicts with the GSAP
+   parallax translate / hover-scale on these elements. */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .imageCard {
+    zoom: 0.7;
+  }
+}
+
+/* Hide the cursor-following floating images on tablet and below —
+   the effect needs a mouse, and they crowd the hero on small screens. */
+@media (max-width: 1024px) {
+  .imageLayer {
+    display: none;
+  }
+}
+
 .contentCard {
   position: relative;
   z-index: 1;

@@ -72,6 +72,9 @@ export default function BentoGrid() {
     const track = trackRef.current;
     if (!section || !track) return;
 
+    // Desktop/tablet only — mobile shows the cards in a native horizontal scroll
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 769px)", () => {
     const ctx = gsap.context(() => {
       const cards = track.querySelectorAll<HTMLDivElement>(".bento-card");
 
@@ -113,12 +116,16 @@ export default function BentoGrid() {
       );
     }, section);
 
-    return () => ctx.revert();
+      return () => ctx.revert();
+    });
+
+    return () => mm.revert();
   }, []);
 
   return (
     <section
       ref={sectionRef}
+      className="bento-section"
       style={{
         backgroundColor: "#fff",
         overflow: "hidden",
@@ -179,6 +186,7 @@ export default function BentoGrid() {
       {/* Cards track */}
       <div
         ref={trackRef}
+        className="bento-track"
         style={{
           display: "flex",
           gap: "1.2rem",

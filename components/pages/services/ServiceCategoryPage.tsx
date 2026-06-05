@@ -9,6 +9,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AboutTestimonials from "@/components/sections/AboutTestimonials";
 import CTA from "@/components/sections/CTA";
+import ScrollRevealText from "@/components/ui/ScrollRevealText";
 import type { ServiceCategory, FAQ } from "@/lib/data/serviceCategories";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -256,6 +257,7 @@ export default function ServiceCategoryPage({ cat }: { cat: ServiceCategory }) {
         ════════════════════════════════ */}
         <section
           ref={imgSectionRef}
+          className="service-banner"
           style={{
             position: "relative",
             height: "clamp(420px, 65vh, 760px)",
@@ -375,7 +377,6 @@ export default function ServiceCategoryPage({ cat }: { cat: ServiceCategory }) {
                   className="svc-row"
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
                     gap: "clamp(2rem, 5vw, 5rem)",
                     alignItems: "center",
                     padding: "clamp(3.5rem, 7vw, 6rem) 0",
@@ -402,12 +403,13 @@ export default function ServiceCategoryPage({ cat }: { cat: ServiceCategory }) {
                       {service.label}
                     </h3>
 
-                    <p style={{
-                      fontFamily: "var(--font-dm-sans)", fontSize: "1rem", lineHeight: 1.8,
-                      color: "var(--muted)", margin: "0 0 1.8rem", maxWidth: "420px",
-                    }}>
-                      {service.description}
-                    </p>
+                    <ScrollRevealText
+                      text={service.description}
+                      style={{
+                        fontFamily: "var(--font-dm-sans)", fontSize: "1rem", lineHeight: 1.8,
+                        margin: "0 0 1.8rem", maxWidth: "420px",
+                      }}
+                    />
 
                     <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "2rem" }}>
                       {service.deliverables.map((d) => (

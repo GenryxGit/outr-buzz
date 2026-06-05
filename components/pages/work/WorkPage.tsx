@@ -122,12 +122,12 @@ export default function WorkPage() {
           </span>
         </div>
 
-        {/* ── Cards grid ── */}
+        {/* ── Cards grid (2 → 1 column ≤768 via .work-grid) ── */}
         <div
+          className="work-grid"
           style={{
             padding: "0 clamp(1.5rem, 5vw, 4rem) clamp(5rem, 10vw, 8rem)",
             display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
             gap: "1.25rem",
           }}
         >

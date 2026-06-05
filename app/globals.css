@@ -33,6 +33,20 @@ body {
   a, button { cursor: none; }
 }
 
+/* Hide the custom cursor on touch screens and tablet/mobile widths */
+@media (max-width: 1024px), (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
+/* Navbar is fixed on desktop, but sits at the top (not fixed) on tablet & below */
+@media (max-width: 1024px) {
+  .site-navbar {
+    position: absolute !important;
+  }
+}
+
 input,
 textarea,
 select {
@@ -140,11 +154,147 @@ html.lenis {
   background-color: #111;
 }
 
-/* Bento stats — stack on mobile */
+/* ════════════════════════════════════════════
+   RESPONSIVE LAYOUT
+   Breakpoints: 1024 / 768 / 480
+   Grid layouts live here so media queries can reflow them.
+   Components keep clamp() inline for fluid type/spacing.
+════════════════════════════════════════════ */
+
+/* Scale the whole rem-based type system down ~20% on ≤1366px devices.
+   Root font-size drives every rem value across the site, so this shrinks
+   all type (and rem spacing) proportionally without touching components. */
+@media (max-width: 1366px) {
+  html {
+    font-size: 80%;
+  }
+}
+
+/* Full-width banner image on service category + detail pages.
+   Desktop height is set inline on the element; mobile shrinks it ~30%. */
 @media (max-width: 768px) {
+  .service-banner {
+    height: clamp(220px, 33vh, 360px) !important;
+    border-radius: 24px !important;
+  }
+  /* Service detail hero CTA → left-aligned under the paragraph on mobile */
+  .service-hero-cta {
+    align-items: flex-start !important;
+  }
+}
+
+/* ── Base (desktop) grid definitions ── */
+.svc-row,
+.deliverable-row {
+  grid-template-columns: 1fr 1fr;
+}
+
+.process-row {
+  grid-template-columns: 80px 1fr 220px;
+}
+
+.about-p-card {
+  grid-template-columns: 80px 1fr auto;
+}
+
+.home-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0.75rem;
+}
+
+.work-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* ── Tablet ── */
+@media (max-width: 1024px) {
+  .process-row {
+    grid-template-columns: 64px 1fr 160px;
+  }
+}
+
+/* ── Mobile / small tablet ── */
+@media (max-width: 768px) {
+  /* Alternating image/text rows → single column, text first */
+  .svc-row,
+  .deliverable-row {
+    grid-template-columns: 1fr;
+  }
+  .svc-row > *,
+  .deliverable-row > * {
+    order: 0 !important;
+  }
+
+  /* Process rows → number + text only, mascot hidden */
+  .process-row {
+    grid-template-columns: 48px 1fr;
+  }
+  .process-row > :nth-child(3) {
+    display: none;
+  }
+
+  /* About principle rows → number + text, tag wraps under */
+  .about-p-card {
+    grid-template-columns: 48px 1fr;
+  }
+  .about-p-card > :nth-child(3) {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 0.5rem;
+  }
+
+  /* Home projects + work cards → single column */
+  .home-projects-grid {
+    grid-template-columns: 1fr;
+  }
+  .home-projects-grid > * {
+    grid-column: 1 / -1 !important;
+  }
+  .work-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Stats bento → every card full width, auto rows */
+  .bento-grid > *,
   .bento-stats-card {
     grid-column: 1 / -1 !important;
     grid-row: auto !important;
+  }
+
+  /* BentoGrid carousel → track scrolls horizontally (no pin on mobile) */
+  .bento-track {
+    width: 100% !important;
+    max-width: 100%;
+    overflow-x: auto;
+    transform: none !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* CTA scatter → hide floating images, show centred text */
+  .cta-scatter-img {
+    display: none !important;
+  }
+  .cta-text {
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+  }
+}
+
+/* ── Phones ── */
+@media (max-width: 480px) {
+  .process-row {
+    grid-template-columns: 40px 1fr;
+  }
+  /* Allow the big CTA heading to wrap on very small screens */
+  .cta-heading span {
+    white-space: normal !important;
   }
 }
 
