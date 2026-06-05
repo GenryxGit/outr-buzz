@@ -57,8 +57,8 @@ export const metadata: Metadata = {
     creator: "@outrbuzz",
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
     apple: "/logo.png",
   },
   alternates: {
