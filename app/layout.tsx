@@ -39,7 +39,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Outr Buzz", url: SITE_URL }],
   creator: "Outr Buzz",
   publisher: "Outr Buzz",
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  // NOTE: site is currently hidden from search engines (pre-launch).
+  // Flip both to true when ready to go public / start SEO.
+  robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
   openGraph: {
     type: "website",
     locale: "en_US",
