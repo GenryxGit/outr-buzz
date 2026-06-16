@@ -12,12 +12,12 @@ const IMG_SCALE = 0.8;
 
 // ex/ey: fraction of viewport from center (negative = left/up)
 const IMGS = [
-  { src: "/images/homepage/cta/1.png", w: 265, h: 335, sr: -16, ex: -0.35, ey: -0.22, er: -7 },
-  { src: "/images/homepage/cta/2.png", w: 180, h: 180, sr:  20, ex: -0.04, ey: -0.36, er:  5 },
-  { src: "/images/homepage/cta/3.png", w: 250, h: 295, sr:  -5, ex:  0.33, ey: -0.26, er: 11 },
-  { src: "/images/homepage/cta/4.png", w: 310, h: 215, sr:   9, ex: -0.40, ey:  0.20, er: -6 },
-  { src: "/images/homepage/cta/5.png", w: 225, h: 295, sr: -11, ex:  0.15, ey:  0.27, er:  7 },
-  { src: "/images/homepage/cta/6.png", w: 285, h: 215, sr:  13, ex:  0.39, ey:  0.16, er: -9 },
+  { src: "/images/homepage/cta/1.png", alt: "Brand identity design project by Outr Buzz", w: 265, h: 335, sr: -16, ex: -0.35, ey: -0.22, er: -7 },
+  { src: "/images/homepage/cta/2.png", alt: "Web design portfolio by Outr Buzz studio", w: 180, h: 180, sr:  20, ex: -0.04, ey: -0.36, er:  5 },
+  { src: "/images/homepage/cta/3.png", alt: "UI/UX design case study by Outr Buzz", w: 250, h: 295, sr:  -5, ex:  0.33, ey: -0.26, er: 11 },
+  { src: "/images/homepage/cta/4.png", alt: "Social media marketing work by Outr Buzz", w: 310, h: 215, sr:   9, ex: -0.40, ey:  0.20, er: -6 },
+  { src: "/images/homepage/cta/5.png", alt: "Ecommerce development project by Outr Buzz", w: 225, h: 295, sr: -11, ex:  0.15, ey:  0.27, er:  7 },
+  { src: "/images/homepage/cta/6.png", alt: "Digital marketing campaign by Outr Buzz", w: 285, h: 215, sr:  13, ex:  0.39, ey:  0.16, er: -9 },
 ];
 
 export default function CTA() {
@@ -104,7 +104,7 @@ export default function CTA() {
           >
             <Image
               src={img.src}
-              alt=""
+              alt={img.alt}
               fill
               style={{ objectFit: "cover" }}
               sizes="350px"
