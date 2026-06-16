@@ -13,9 +13,11 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/work` },
   openGraph: {
     url: `${SITE_URL}/work`,
+    siteName: "Outr Buzz",
     title: "Our Work — Portfolio & Case Studies | Outr Buzz",
     description:
       "Brand identity, web design, UI/UX, and social media portfolio for clients across Pakistan, Dubai, and beyond.",
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: "Outr Buzz Portfolio" }],
   },
 };
 

@@ -28,6 +28,13 @@ export const metadata: Metadata = {
     title: "Outr Buzz — Design. Build. Buzz.",
     description:
       "Brand identities, UI/UX, websites & digital marketing for brands that demand attention. Studio in Lahore & Dubai.",
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: "Outr Buzz — Design. Build. Buzz." }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Outr Buzz — Design. Build. Buzz.",
+    description: "Brand identities, UI/UX, websites & digital marketing for brands that demand attention.",
+    images: [`${SITE_URL}/og-image.png`],
   },
 };
 

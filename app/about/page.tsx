@@ -13,9 +13,11 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/about` },
   openGraph: {
     url: `${SITE_URL}/about`,
+    siteName: "Outr Buzz",
     title: "About Us — Design Studio in Lahore & Dubai | Outr Buzz",
     description:
       "Meet the team behind Outr Buzz — designers, developers, and strategists based in Lahore and Dubai building brands that demand attention.",
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: "Outr Buzz — Design Studio" }],
   },
 };
 
