@@ -3,15 +3,19 @@ import { SITE_URL } from "@/lib/site";
 import WorkPage from "@/components/pages/work/WorkPage";
 
 export const metadata: Metadata = {
-  title: "Work",
+  title: "Our Work — Portfolio & Case Studies | Outr Buzz",
   description:
-    "Selected case studies from Outr Buzz — brand identity, UI/UX design, product strategy, and development projects.",
+    "Explore Outr Buzz's portfolio of brand identity, web design, UI/UX, and social media projects for clients across Pakistan, Dubai, and beyond. Real results, real work.",
+  keywords: [
+    "design portfolio Pakistan", "branding case studies", "web design portfolio Lahore",
+    "UI/UX case studies", "social media portfolio Dubai", "creative agency work",
+  ],
   alternates: { canonical: `${SITE_URL}/work` },
   openGraph: {
     url: `${SITE_URL}/work`,
-    title: "Work | Outr Buzz",
+    title: "Our Work — Portfolio & Case Studies | Outr Buzz",
     description:
-      "Selected case studies — brand identity, UI/UX design, product strategy, and development.",
+      "Brand identity, web design, UI/UX, and social media portfolio for clients across Pakistan, Dubai, and beyond.",
   },
 };
 

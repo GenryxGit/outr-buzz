@@ -33,14 +33,14 @@ export const metadata: Metadata = {
   description:
     "Outr Buzz is a design and development studio for brands that demand attention. UI/UX design, product strategy, brand identity, and development.",
   keywords: [
-    "UI/UX design", "brand identity", "web design", "product strategy",
-    "design studio", "branding agency", "development", "Lahore", "Dubai",
+    "web design agency Lahore", "branding agency Dubai", "UI/UX design studio Pakistan",
+    "digital marketing agency Lahore", "brand identity design", "ecommerce development Pakistan",
+    "social media marketing Dubai", "web development agency", "design studio Lahore",
+    "mobile app development Pakistan", "product design studio", "Outr Buzz",
   ],
   authors: [{ name: "Outr Buzz", url: SITE_URL }],
   creator: "Outr Buzz",
   publisher: "Outr Buzz",
-  // NOTE: site is currently hidden from search engines (pre-launch).
-  // Flip both to true when ready to go public / start SEO.
   robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
   openGraph: {
     type: "website",
@@ -50,6 +50,14 @@ export const metadata: Metadata = {
     title: "OUTR BUZZ — Design. Build. Buzz.",
     description:
       "A studio for brands that demand attention. UI/UX design, product strategy, brand identity, and development.",
+    images: [
+      {
+        url: `${SITE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Outr Buzz — Design, Build, Buzz.",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -74,9 +82,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable} ${syne.variable}`}>
       <head>
-        {/* Preconnect to external image CDNs used across the site */}
-        <link rel="preconnect" href="https://images.unsplash.com" />
-        <link rel="dns-prefetch" href="https://images.unsplash.com" />
         {/* JSON-LD — Organization + WebSite */}
         <script
           type="application/ld+json"

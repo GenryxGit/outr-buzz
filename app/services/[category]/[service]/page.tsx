@@ -19,9 +19,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const item = getServiceBySlug(category, service);
   if (!item) return {};
   return {
-    title: item.label,
+    title: `${item.label} in Lahore & Dubai | Outr Buzz`,
     description: item.description,
+    keywords: [
+      `${item.label.toLowerCase()} Lahore`,
+      `${item.label.toLowerCase()} Dubai`,
+      `${item.label.toLowerCase()} Pakistan`,
+      `${item.label.toLowerCase()} agency`,
+      "Outr Buzz",
+    ],
     alternates: { canonical: `${SITE_URL}/services/${category}/${service}` },
+    openGraph: {
+      url: `${SITE_URL}/services/${category}/${service}`,
+      title: `${item.label} in Lahore & Dubai | Outr Buzz`,
+      description: item.description,
+    },
   };
 }
 

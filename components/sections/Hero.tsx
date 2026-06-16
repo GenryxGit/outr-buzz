@@ -16,17 +16,17 @@ const taglines = [
 // 9 images — 3-col, 3 rows. Reduced from 15 to cut LCP/bandwidth cost.
 const floatingImages = [
   // Row 1
-  { src: "/images/homepage/hero-1.png", w: 390, h: 365, top: "4%",  left: "2%" },
-  { src: "/images/homepage/hero-2.png", w: 355, h: 415, top: "3%",  left: "36%" },
-  { src: "/images/homepage/hero-3.png", w: 375, h: 350, top: "5%",  left: "69%" },
+  { src: "/images/homepage/hero-1.png", alt: "Brand identity design project by Outr Buzz", w: 390, h: 365, top: "4%",  left: "2%" },
+  { src: "/images/homepage/hero-2.png", alt: "UI/UX design work by Outr Buzz studio", w: 355, h: 415, top: "3%",  left: "36%" },
+  { src: "/images/homepage/hero-3.png", alt: "Web design and development case study", w: 375, h: 350, top: "5%",  left: "69%" },
   // Row 2
-  { src: "/images/homepage/hero-4.png", w: 365, h: 395, top: "36%", left: "19%" },
-  { src: "/images/homepage/hero-5.png", w: 410, h: 360, top: "34%", left: "52%" },
-  { src: "/images/homepage/hero-6.png", w: 360, h: 390, top: "37%", right: "1%" },
+  { src: "/images/homepage/hero-4.png", alt: "Social media marketing campaign by Outr Buzz", w: 365, h: 395, top: "36%", left: "19%" },
+  { src: "/images/homepage/hero-5.png", alt: "Ecommerce website design by Outr Buzz", w: 410, h: 360, top: "34%", left: "52%" },
+  { src: "/images/homepage/hero-6.png", alt: "Mobile app UI design by Outr Buzz", w: 360, h: 390, top: "37%", right: "1%" },
   // Row 3
-  { src: "/images/homepage/hero-7.png", w: 385, h: 370, top: "68%", left: "3%" },
-  { src: "/images/homepage/hero-8.png", w: 350, h: 420, top: "66%", left: "37%" },
-  { src: "/images/homepage/hero-9.png", w: 400, h: 355, top: "69%", left: "70%" },
+  { src: "/images/homepage/hero-7.png", alt: "Logo and brand identity by Outr Buzz Lahore", w: 385, h: 370, top: "68%", left: "3%" },
+  { src: "/images/homepage/hero-8.png", alt: "Digital marketing portfolio by Outr Buzz Dubai", w: 350, h: 420, top: "66%", left: "37%" },
+  { src: "/images/homepage/hero-9.png", alt: "Product design and strategy by Outr Buzz", w: 400, h: 355, top: "69%", left: "70%" },
 ];
 
 export default function Hero({ ready }: { ready: boolean }) {
@@ -91,7 +91,7 @@ export default function Hero({ ready }: { ready: boolean }) {
           >
             <Image
               src={img.src}
-              alt=""
+              alt={img.alt}
               width={img.w}
               height={img.h}
               style={{ objectFit: "cover", display: "block" }}
@@ -109,14 +109,16 @@ export default function Hero({ ready }: { ready: boolean }) {
           </span>
         </div>
 
-        <div className="line-mask">
-          <span ref={line1Ref} className={styles.headlineLine}>We Design.</span>
-        </div>
-        <div className="line-mask">
-          <span ref={line2Ref} className={styles.headlineLine}>
-            We Build. <span className={styles.headlineAccent}>We Buzz. ✦</span>
-          </span>
-        </div>
+        <h1 className={styles.headline}>
+          <div className="line-mask">
+            <span ref={line1Ref} className={styles.headlineLine}>We Design.</span>
+          </div>
+          <div className="line-mask">
+            <span ref={line2Ref} className={styles.headlineLine}>
+              We Build. <span className={styles.headlineAccent}>We Buzz. ✦</span>
+            </span>
+          </div>
+        </h1>
 
         <div className={styles.bottomStack}>
           <p ref={subtextRef} className={styles.subtext} style={{ opacity: 0 }}>
