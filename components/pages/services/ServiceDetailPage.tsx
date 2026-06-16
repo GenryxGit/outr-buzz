@@ -202,7 +202,7 @@ export default function ServiceDetailPage({ cat, item }: Props) {
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "0.6rem",
                   fontFamily: "var(--font-space-grotesk)", fontWeight: 700, fontSize: "0.88rem",
-                  color: "var(--black)", backgroundColor: "var(--electric)",
+                  color: "var(--black)", backgroundColor: "#cdff00",
                   padding: "1rem 2.2rem", borderRadius: "100px",
                   textDecoration: "none", letterSpacing: "0.02em",
                 }}

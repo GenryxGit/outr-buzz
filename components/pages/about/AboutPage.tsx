@@ -31,32 +31,32 @@ const R3 = `calc(4vh + ${(CARD_H + ROW_GAP) * 2}px)`;
 const cards = [
   /* Row 1 — left edge */
   {
-    src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80",
+    src: "/images/about/team-member-1.png",
     name: "Zaid Rahman", role: "Creative Director", top: R1, left: "3%"
   },
   /* Row 1 — right edge */
   {
-    src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80",
+    src: "/images/about/team-member-2.png",
     name: "Aisha Karim", role: "Lead Designer", top: R1, left: `calc(97% - ${CARD_W}px)`
   },
   /* Row 2 — center-left */
   {
-    src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80",
+    src: "/images/about/team-member-3.png",
     name: "Omar Farooq", role: "UI/UX Designer", top: R2, left: `calc(50% - ${CARD_W + 15}px)`
   },
   /* Row 2 — center-right */
   {
-    src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80",
+    src: "/images/about/team-member-4.png",
     name: "Sara Malik", role: "Brand Strategist", top: R2, left: "calc(50% + 15px)"
   },
   /* Row 3 — bottom-left */
   {
-    src: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&q=80",
+    src: "/images/about/team-member-5.png",
     name: "Bilal Sheikh", role: "Frontend Developer", top: R3, left: "3%"
   },
   /* Row 3 — bottom-right */
   {
-    src: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&q=80",
+    src: "/images/about/team-member-6.png",
     name: "Hana Siddiqui", role: "Motion Designer", top: R3, left: `calc(97% - ${CARD_W}px)`
   },
 ];
@@ -239,7 +239,7 @@ export default function AboutPage() {
         ══════════════════════════════════ */}
         <section className={styles.mobileTeam}>
           <span className={styles.heroEyebrow}>OUR TEAM</span>
-          <h2 className={styles.teamHeading}>Meet the<br />team.</h2>
+          <h2 className={styles.teamHeading}>Meet the team.</h2>
 
           <div className={styles.teamCard} key={teamIndex}>
             <div className={styles.cardFrame}>

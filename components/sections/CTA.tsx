@@ -12,12 +12,12 @@ const IMG_SCALE = 0.8;
 
 // ex/ey: fraction of viewport from center (negative = left/up)
 const IMGS = [
-  { src: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=600&q=80", w: 265, h: 335, sr: -16, ex: -0.35, ey: -0.22, er: -7 },
-  { src: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80", w: 180, h: 180, sr:  20, ex: -0.04, ey: -0.36, er:  5 },
-  { src: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80", w: 250, h: 295, sr:  -5, ex:  0.33, ey: -0.26, er: 11 },
-  { src: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600&q=80", w: 310, h: 215, sr:   9, ex: -0.40, ey:  0.20, er: -6 },
-  { src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80", w: 225, h: 295, sr: -11, ex:  0.15, ey:  0.27, er:  7 },
-  { src: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&q=80", w: 285, h: 215, sr:  13, ex:  0.39, ey:  0.16, er: -9 },
+  { src: "/images/homepage/cta/1.png", w: 265, h: 335, sr: -16, ex: -0.35, ey: -0.22, er: -7 },
+  { src: "/images/homepage/cta/2.png", w: 180, h: 180, sr:  20, ex: -0.04, ey: -0.36, er:  5 },
+  { src: "/images/homepage/cta/3.png", w: 250, h: 295, sr:  -5, ex:  0.33, ey: -0.26, er: 11 },
+  { src: "/images/homepage/cta/4.png", w: 310, h: 215, sr:   9, ex: -0.40, ey:  0.20, er: -6 },
+  { src: "/images/homepage/cta/5.png", w: 225, h: 295, sr: -11, ex:  0.15, ey:  0.27, er:  7 },
+  { src: "/images/homepage/cta/6.png", w: 285, h: 215, sr:  13, ex:  0.39, ey:  0.16, er: -9 },
 ];
 
 export default function CTA() {

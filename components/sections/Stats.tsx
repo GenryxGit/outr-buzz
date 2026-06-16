@@ -8,8 +8,8 @@ import { stats } from "@/lib/data/stats";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const IMG_1 = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=900&q=80";
-const IMG_2 = "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80";
+const IMG_1 = "/images/homepage/results/result-1.png";
+const IMG_2 = "/images/homepage/results/result-2.png";
 
 export default function Stats() {
   const sectionRef = useRef<HTMLElement>(null);

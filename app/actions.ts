@@ -1,6 +1,6 @@
 "use server";
 
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 export type ContactFormState = {
   status: "idle" | "error" | "success";
@@ -14,11 +14,8 @@ export const initialContactFormState: ContactFormState = {
   errors: {},
 };
 
-// Where contact submissions are delivered.
 const TO_EMAIL = "hello@outrbuzz.com";
-// Sender — must be on a domain verified in Resend.
-// Until outrbuzz.com is verified, use "Outr Buzz <onboarding@resend.dev>" for testing.
-const FROM_EMAIL = "Outr Buzz <hello@outrbuzz.com>";
+const FROM_EMAIL = '"Outr Buzz" <hello@outrbuzz.com>';
 
 function getStringValue(value: FormDataEntryValue | null) {
   return typeof value === "string" ? value.trim() : "";
@@ -56,9 +53,9 @@ export async function sendContactEmail(formData: FormData): Promise<ContactFormS
     return { status: "error", message: "Please fix the highlighted fields.", errors };
   }
 
-  // ── Send via Resend ──
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
+  // ── SMTP config check ──
+  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
+  if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
     return {
       status: "error",
       message: "Email is not configured yet. Please try again shortly.",
@@ -66,7 +63,12 @@ export async function sendContactEmail(formData: FormData): Promise<ContactFormS
     };
   }
 
-  const resend = new Resend(apiKey);
+  const transporter = nodemailer.createTransport({
+    host: SMTP_HOST,
+    port: Number(SMTP_PORT),
+    secure: true, // SSL on port 465
+    auth: { user: SMTP_USER, pass: SMTP_PASS },
+  });
 
   const html = `
     <h2>New project inquiry</h2>
@@ -78,18 +80,13 @@ export async function sendContactEmail(formData: FormData): Promise<ContactFormS
   `;
 
   try {
-    const { error } = await resend.emails.send({
+    await transporter.sendMail({
       from: FROM_EMAIL,
       to: TO_EMAIL,
       replyTo: email,
       subject: subject ? `[Outr Buzz] ${subject}` : `[Outr Buzz] New inquiry from ${fullName}`,
       html,
     });
-
-    if (error) {
-      console.error("Resend error:", error);
-      return { status: "error", message: "Something went wrong. Please try again.", errors: {} };
-    }
 
     return { status: "success", message: "Thanks! Your message is on its way.", errors: {} };
   } catch (err) {

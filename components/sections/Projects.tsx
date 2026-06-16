@@ -82,7 +82,7 @@ export default function Projects() {
 
       {/* 12-column grid (stacks to 1 column ≤768 via .home-projects-grid) */}
       <div className="home-projects-grid">
-        {projects.map((project, i) => (
+        {projects.slice(0, 3).map((project, i) => (
           <Link
             key={project.id}
             href="/contact"

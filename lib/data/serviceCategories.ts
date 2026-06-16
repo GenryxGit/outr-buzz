@@ -56,7 +56,7 @@ export const serviceCategories: ServiceCategory[] = [
     title: "Development",
     icon: "◈",
     color: "#0d1520",
-    accent: "#CDFF00",
+    accent: "#cdff00",
     tagline: "Code that ships. Products that scale.",
     description:
       "From marketing websites to full-stack web apps — we build fast, clean, and production-ready. Every line of code is written with performance and maintainability as defaults, not afterthoughts.",
@@ -459,7 +459,7 @@ export const serviceCategories: ServiceCategory[] = [
     title: "Digital Marketing",
     icon: "◉",
     color: "#0a1a0a",
-    accent: "#CDFF00",
+    accent: "#cdff00",
     tagline: "Growth that compounds. Not just campaigns.",
     description:
       "Marketing that works beyond the first click. We build search visibility, paid acquisition funnels, and content engines that generate compounding returns — not just one-off spikes.",

@@ -190,7 +190,7 @@ export default function Navbar() {
 
           {/* Services with dropdown */}
           <div
-            style={{ position: "relative" }}
+            style={{ position: "static" }}
             onMouseEnter={openServices}
             onMouseLeave={closeServices}
           >
@@ -286,26 +286,6 @@ export default function Navbar() {
                   </div>
                 ))}
 
-                {/* Explore all */}
-                <div style={{ gridColumn: "1 / -1", paddingTop: "1.2rem", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", justifyContent: "flex-end" }}>
-                  <Link
-                    href="/services"
-                    style={{
-                      fontFamily: "var(--font-space-grotesk)",
-                      fontWeight: 700,
-                      fontSize: "0.88rem",
-                      color: "var(--white)",
-                      textDecoration: "none",
-                      borderBottom: "1px solid rgba(255,255,255,0.3)",
-                      paddingBottom: "1px",
-                      transition: "border-color 0.2s",
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.borderBottomColor = "var(--acid)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.borderBottomColor = "rgba(255,255,255,0.3)")}
-                  >
-                    Explore All Services →
-                  </Link>
-                </div>
               </div>
             )}
           </div>

@@ -123,16 +123,8 @@ export default function WorkCard({ project }: { project: Project }) {
         {project.year}
       </span>
 
-      {/* ── Bottom: info block ── */}
-      <div
-        style={{
-          position: "absolute", bottom: 0, left: 0, right: 0,
-          padding: "2rem", zIndex: 3,
-          transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1)",
-          transform: hovered ? "translateY(-4px)" : "translateY(0)",
-        }}
-      >
-        {/* Client + title */}
+      {/* ── Bottom left: client + title — always visible ── */}
+      <div style={{ position: "absolute", bottom: "2rem", left: "2rem", zIndex: 3 }}>
         <p
           style={{
             fontFamily: "var(--font-dm-sans)",
@@ -140,7 +132,6 @@ export default function WorkCard({ project }: { project: Project }) {
             color: "rgba(255,255,255,0.5)",
             margin: "0 0 0.25rem",
             letterSpacing: "0.05em",
-            transition: "opacity 0.4s ease",
           }}
         >
           {project.client}
@@ -152,57 +143,67 @@ export default function WorkCard({ project }: { project: Project }) {
             fontSize: "clamp(1.4rem, 2.5vw, 2rem)",
             letterSpacing: "-0.03em",
             color: "var(--white)",
-            margin: "0 0 0.8rem",
+            margin: 0,
             lineHeight: 1.1,
           }}
         >
           {project.title}
         </h2>
+      </div>
 
-        {/* Description — slides up + fades in on hover */}
-        <p
-          style={{
-            fontFamily: "var(--font-dm-sans)",
-            fontSize: "0.85rem",
-            color: "rgba(255,255,255,0.65)",
-            margin: "0 0 1.2rem",
-            maxWidth: "400px",
-            lineHeight: 1.6,
-            opacity: hovered ? 1 : 0,
-            transform: hovered ? "translateY(0)" : "translateY(10px)",
-            transition: "opacity 0.4s ease 0.05s, transform 0.45s cubic-bezier(0.16,1,0.3,1) 0.05s",
-          }}
-        >
-          {project.description}
-        </p>
-
-        {/* Services tags — slide up + stagger */}
+      {/* ── Bottom right: description + tags — slides up on hover ── */}
+      <div
+        style={{
+          position: "absolute", bottom: "2rem", right: "2rem",
+          zIndex: 3, maxWidth: "380px", textAlign: "right",
+        }}
+      >
         <div
           style={{
-            display: "flex", gap: "0.5rem", flexWrap: "wrap",
-            opacity: hovered ? 1 : 0,
-            transform: hovered ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.4s ease 0.12s, transform 0.45s cubic-bezier(0.16,1,0.3,1) 0.12s",
+            overflow: "hidden",
+            maxHeight: hovered ? "180px" : "0",
+            transition: "max-height 0.55s cubic-bezier(0.16,1,0.3,1)",
           }}
         >
-          {project.services.slice(0, 3).map((s) => (
-            <span
-              key={s}
+          <div
+            style={{
+              transform: hovered ? "translateY(0)" : "translateY(110%)",
+              transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1)",
+              paddingBottom: "0.5rem",
+            }}
+          >
+            <p
               style={{
-                fontFamily: "var(--font-space-grotesk)",
-                fontWeight: 700,
-                fontSize: "0.62rem",
-                letterSpacing: "0.06em",
-                color: "var(--black)",
-                backgroundColor: project.accent,
-                padding: "0.32rem 0.85rem",
-                borderRadius: "100px",
-                whiteSpace: "nowrap",
+                fontFamily: "var(--font-dm-sans)",
+                fontSize: "0.85rem",
+                color: "rgba(255,255,255,0.65)",
+                margin: "0 0 1rem",
+                lineHeight: 1.6,
               }}
             >
-              {s}
-            </span>
-          ))}
+              {project.description}
+            </p>
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "flex-end" }}>
+              {project.services.slice(0, 2).map((s) => (
+                <span
+                  key={s}
+                  style={{
+                    fontFamily: "var(--font-space-grotesk)",
+                    fontWeight: 700,
+                    fontSize: "0.62rem",
+                    letterSpacing: "0.06em",
+                    color: "var(--black)",
+                    backgroundColor: project.accent,
+                    padding: "0.32rem 0.85rem",
+                    borderRadius: "100px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

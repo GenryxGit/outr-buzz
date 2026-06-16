@@ -16,17 +16,17 @@ const taglines = [
 // 9 images — 3-col, 3 rows. Reduced from 15 to cut LCP/bandwidth cost.
 const floatingImages = [
   // Row 1
-  { src: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=700&q=75", w: 390, h: 365, top: "4%",  left: "2%" },
-  { src: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=700&q=75", w: 355, h: 415, top: "3%",  left: "36%" },
-  { src: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=700&q=75", w: 375, h: 350, top: "5%",  left: "69%" },
+  { src: "/images/homepage/hero-1.png", w: 390, h: 365, top: "4%",  left: "2%" },
+  { src: "/images/homepage/hero-2.png", w: 355, h: 415, top: "3%",  left: "36%" },
+  { src: "/images/homepage/hero-3.png", w: 375, h: 350, top: "5%",  left: "69%" },
   // Row 2
-  { src: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=700&q=75", w: 365, h: 395, top: "36%", left: "19%" },
-  { src: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=700&q=75", w: 410, h: 360, top: "34%", left: "52%" },
-  { src: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=700&q=75", w: 360, h: 390, top: "37%", right: "1%" },
+  { src: "/images/homepage/hero-4.png", w: 365, h: 395, top: "36%", left: "19%" },
+  { src: "/images/homepage/hero-5.png", w: 410, h: 360, top: "34%", left: "52%" },
+  { src: "/images/homepage/hero-6.png", w: 360, h: 390, top: "37%", right: "1%" },
   // Row 3
-  { src: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=700&q=75", w: 385, h: 370, top: "68%", left: "3%" },
-  { src: "https://images.unsplash.com/photo-1587614382346-4ec70e388b28?w=700&q=75", w: 350, h: 420, top: "66%", left: "37%" },
-  { src: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=700&q=75", w: 400, h: 355, top: "69%", left: "70%" },
+  { src: "/images/homepage/hero-7.png", w: 385, h: 370, top: "68%", left: "3%" },
+  { src: "/images/homepage/hero-8.png", w: 350, h: 420, top: "66%", left: "37%" },
+  { src: "/images/homepage/hero-9.png", w: 400, h: 355, top: "69%", left: "70%" },
 ];
 
 export default function Hero({ ready }: { ready: boolean }) {
